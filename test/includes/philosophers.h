@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 20:57:27 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 17:50:59 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:09:59 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef struct s_data
 	int					death;
 	int					win;
 	long int			start;
+	pthread_mutex_t		c_win;
+	pthread_mutex_t		c_death;
 	pthread_mutex_t		check;
 	pthread_mutex_t		print;
 }				t_data;
@@ -71,11 +73,13 @@ t_data		*data_init(int ac, char **av);
 t_core		*core_init(int ac, char **av);
 
 long int	get_time(void);
-void		status_update(t_data *data, t_philo *philo, char *status);
+int			status_update(t_data *data, t_philo *philo, char *status);
 int			create_mutex(t_core	*core);
 int			threading(t_core *core, t_philo *philo, int i);
 void		usleep_(long int duration);
 void		sleep_(t_philo *philo);
 void		eat_(t_data *data, t_philo *philo);
+int			check_win(t_data *data);
+int			check_death(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 00:32:48 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 18:55:11 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 00:30:59 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,14 @@ void	usleep_(long int duration)
 
 void	sleep_(t_philo *philo)
 {
-	if (philo->data->win == 1 || philo->data->death == 1)
-		return ;
 	status_update(philo->data, philo, "is sleeping");
 	usleep_(philo->data->sleep);
-	if (philo->data->win == 1 || philo->data->death == 1)
-		return ;
 	status_update(philo->data, philo, "is thinking");
 }
 
 void	eat_(t_data *data, t_philo *philo)
 {
-	if (data->win == 1 || data->death == 1)
-		return ;
 	pthread_mutex_lock(&philo->left);
-	if (data->win == 1 || data->death == 1)
-	{
-		pthread_mutex_unlock(&philo->left);
-		return ;
-	}
 	status_update(data, philo, "has taken a fork");
 	if (!philo->right)
 	{
@@ -55,25 +44,8 @@ void	eat_(t_data *data, t_philo *philo)
 		pthread_mutex_unlock(&philo->left);
 		return ;
 	}
-	if (data->win == 1 || data->death == 1)
-	{
-		pthread_mutex_unlock(&philo->left);
-		return ;
-	}
 	pthread_mutex_lock(philo->right);
-	if (data->win == 1 || data->death == 1)
-	{
-		pthread_mutex_unlock(&philo->left);
-		pthread_mutex_unlock(philo->right);
-		return ;
-	}
 	status_update(data, philo, "has taken a fork");
-	if (data->win == 1 || data->death == 1)
-	{
-		pthread_mutex_unlock(&philo->left);
-		pthread_mutex_unlock(philo->right);
-		return ;
-	}
 	status_update(data, philo, "is eating");
 	usleep_(philo->data->eat);
 	pthread_mutex_lock(&data->check);
@@ -105,11 +77,13 @@ void	print_activity(t_data *data, t_philo *philo, char *status, long int t)
 			t - data->start, philo->id, status);
 }
 
-void	status_update(t_data *data, t_philo *philo, char *status)
+int	status_update(t_data *data, t_philo *philo, char *status)
 {
 	long int	time;
 
 	time = get_time();
+	if (check_win(data) || check_death(data))
+		return (1);
 	pthread_mutex_lock(&data->print);
 	if (time == -1)
 		printf("Philo[%d]\033[2;1;33m Unable to get time...\033[22m\033[0m\n",
@@ -117,4 +91,5 @@ void	status_update(t_data *data, t_philo *philo, char *status)
 	else
 		print_activity(data, philo, status, time);
 	pthread_mutex_unlock(&data->print);
+	return (0);
 }
