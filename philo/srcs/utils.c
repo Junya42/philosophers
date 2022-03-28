@@ -6,13 +6,13 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 21:06:45 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/27 04:03:07 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 05:00:08 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-int ft_atoi(const char *nptr)
+int	ft_atoi(const char *nptr)
 {
 	int			sign;
 	long int	res;
@@ -63,12 +63,12 @@ void	ft_putnbr_fd(int n, int fd)
 	ft_putchar_fd(-(n % 10) + '0', fd);
 }
 
-int     ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
-        size_t  i;
+	size_t	i;
 
-        i = 0;
-        while (s1[i] == s2[i] && (s1[i] && s2[i]))
-                i++;
-        return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	i = 0;
+	while (s1[i] == s2[i] && (s1[i] && s2[i]))
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 20:57:27 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 04:55:03 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 04:56:42 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_philo
 	pthread_mutex_t		*right;
 }				t_philo;
 
-typedef struct	s_core
+typedef struct s_core
 {
 	t_data		*data;
 	t_philo		*philo;
@@ -64,13 +64,13 @@ int			ft_atoi(const char *nptr);
 size_t		ft_strlen(const char *s);
 void		ft_putchar_fd(char c, int fd);
 void		ft_putnbr_fd(int n, int fd);
-int     	ft_strcmp(char *s1, char *s2);
+int			ft_strcmp(char *s1, char *s2);
 
 t_philo		*philo_init(t_data *data);
 t_data		*data_init(int ac, char **av);
 t_core		*core_init(int ac, char **av);
 
-long int	get_time();
+long int	get_time(void);
 void		status_update(t_data *data, t_philo *philo, char *status);
 int			create_mutex(t_core	*core);
 int			threading(t_core *core, t_philo *philo, int i);

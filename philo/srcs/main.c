@@ -6,18 +6,13 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 21:16:47 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 03:53:27 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 04:57:57 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-/*void	clean_memory(t_core *core, t_data *data, t_philo *philo)
-{
-
-}*/
-
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_core	*core;
 

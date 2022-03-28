@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 00:32:48 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 04:48:21 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 04:58:18 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	eat_(t_data *data, t_philo *philo)
 	pthread_mutex_unlock(philo->right);
 }
 
-
 void	print_activity(t_data *data, t_philo *philo, char *status, long int t)
 {
 	if (ft_strcmp(status, "has taken a fork") == 0)
@@ -82,7 +81,7 @@ void	status_update(t_data *data, t_philo *philo, char *status)
 	pthread_mutex_lock(&data->print);
 	if (time == -1)
 		printf("Philo[%d]\033[2;1;33m Unable to get time...\033[22m\033[0m\n",
-				philo->id);
+			philo->id);
 	else
 		print_activity(data, philo, status, time);
 	pthread_mutex_unlock(&data->print);

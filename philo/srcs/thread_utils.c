@@ -6,13 +6,13 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 23:42:29 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 04:28:01 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 04:59:18 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-long int	get_time()
+long int	get_time(void)
 {
 	struct timeval	current_time;
 
@@ -27,8 +27,8 @@ int	create_mutex(t_core	*core)
 
 	i = 0;
 	core->data->start = get_time();
-	if (pthread_mutex_init(&core->data->print, NULL) != 0 ||
-			core->data->start == -1)
+	if (pthread_mutex_init(&core->data->print, NULL) != 0
+		|| core->data->start == -1)
 		return (0);
 	if (pthread_mutex_init(&core->data->check, NULL) != 0)
 		return (i);

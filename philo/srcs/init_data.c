@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 22:11:51 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 03:56:24 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 04:57:11 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	parse_data(char **av)
 	return (1);
 }
 
-int		check_data_values(t_data *data, int ac)
+int	check_data_values(t_data *data, int ac)
 {
 	int	check;
 
@@ -53,6 +53,7 @@ int		check_data_values(t_data *data, int ac)
 		printf("Wrong types of arguments");
 	return (check);
 }
+
 void	get_data_values(t_data *data, int ac, char **av)
 {
 	data->total = ft_atoi(av[0]);
@@ -67,7 +68,7 @@ void	get_data_values(t_data *data, int ac, char **av)
 
 t_data	*data_init(int ac, char **av)
 {
-	t_data *data;
+	t_data	*data;
 
 	if (!parse_data(av))
 		return (NULL);
