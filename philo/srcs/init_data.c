@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 22:11:51 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/27 00:22:00 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 03:56:24 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,24 @@ int	parse_data(char **av)
 	return (1);
 }
 
-int		check_data_values(t_data *data)
+int		check_data_values(t_data *data, int ac)
 {
+	int	check;
+
+	check = 1;
 	if (data->total == -1)
-		return (0);
+		check = 0;
 	if (data->die == -1)
-		return (0);
+		check = 0;
 	if (data->eat == -1)
-		return (0);
+		check = 0;
 	if (data->sleep == -1)
-		return (0);
-	if (data->min == -1)
-		return (0);
-	return (1);
+		check = 0;
+	if (data->min == -1 && ac == 6)
+		check = 0;
+	if (!check)
+		printf("Wrong types of arguments");
+	return (check);
 }
 void	get_data_values(t_data *data, int ac, char **av)
 {
@@ -69,9 +74,12 @@ t_data	*data_init(int ac, char **av)
 	data = NULL;
 	data = (t_data *)malloc(sizeof(t_data) * 1);
 	if (!data)
+	{
+		printf("data malloc failed\n");
 		return (NULL);
+	}
 	get_data_values(data, ac, av);
-	if (!check_data_values(data))
+	if (!check_data_values(data, ac))
 	{
 		free(data);
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 22:38:01 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/27 00:23:35 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/28 03:58:40 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,18 @@ t_core	*core_init(int ac, char **av)
 {
 	t_core	*core;
 
-	if (ac != 5 || ac != 6)
+	if (ac != 5 && ac != 6)
+	{
+		printf("Found %d arguments, required 5 or 6 only\n", ac);
 		return (NULL);
+	}
 	core = NULL;
 	core = (t_core *)malloc(sizeof(t_core) * 1);
 	if (!core)
+	{
+		printf("core malloc failed\n");
 		return (NULL);
+	}
 	core->data = NULL;
 	core->philo = NULL;
 	return (core_elem(core, ac, av));
