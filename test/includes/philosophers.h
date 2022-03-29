@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 20:57:27 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 23:09:59 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 17:14:02 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int			threading(t_core *core, t_philo *philo, int i);
 void		usleep_(long int duration);
 void		sleep_(t_philo *philo);
 void		eat_(t_data *data, t_philo *philo);
+void		eat2_(t_data *data, t_philo *philo);
 int			check_win(t_data *data);
 int			check_death(t_data *data);
 

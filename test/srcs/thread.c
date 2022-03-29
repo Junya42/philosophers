@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 04:38:03 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 23:12:31 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 17:17:11 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,22 @@ int	check_win(t_data *data)
 
 void	*philosophers(void *thread)
 {
-	t_philo	*philo;
-	t_data	*data;
+	t_philo			*philo;
+	t_data			*data;
+	unsigned int	checker;
 
 	philo = (t_philo *)thread;
 	data = philo->data;
+	checker = (unsigned int)(data->total - 1);
 	if (philo->id % 2 == 0)
 		usleep_(philo->data->eat / 10);
 	while (!check_death(data))
 	{
 		//if (data->win != 1 && data->death != 1)
-		eat_(data, philo);
+		if (philo->id == checker)
+			eat2_(data, philo);
+		else
+			eat_(data, philo);
 		//printf("DATA WIN = %d ID = %d\n", data->win, philo->id);
 		if (check_win(data))
 			return (NULL);

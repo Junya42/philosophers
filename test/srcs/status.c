@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 00:32:48 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/29 00:30:59 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 17:15:01 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,41 @@ void	sleep_(t_philo *philo)
 	status_update(philo->data, philo, "is thinking");
 }
 
+void	eat2_(t_data *data, t_philo *philo)
+{
+	printf("before \033[1;42mLock\033[0m LEFT\n");
+	pthread_mutex_lock(philo->right);
+	printf("After \033[1;41mLock\033[0m LEFT\n");
+	status_update(data, philo, "has taken a fork");
+	if (!&philo->left)
+	{
+		usleep_(philo->data->die * 2);
+		pthread_mutex_unlock(&philo->left);
+		return ;
+	}
+	printf("before \033[1;42mLock\033[0m RIGHT\n");
+	pthread_mutex_lock(&philo->left);
+	printf("After \033[1;41mLock\033[0m RIGHT\n");
+	status_update(data, philo, "has taken a fork");
+	status_update(data, philo, "is eating");
+	usleep_(philo->data->eat);
+	pthread_mutex_lock(&data->check);
+	philo->total++;
+	philo->meal = get_time();
+	printf("before \033[1;43mUnlock\033[0m LEFT\n");
+	pthread_mutex_unlock(&data->check);
+	printf("after \033[1;44mUnlock\033[0m LEFT\n");
+	pthread_mutex_unlock(philo->right);
+	printf("before \033[1;43mUnlock\033[0m RIGHT\n");
+	pthread_mutex_unlock(&philo->left);
+	printf("after \033[1;44mUnlock\033[0m RIGHT\n");
+}
+
 void	eat_(t_data *data, t_philo *philo)
 {
+	printf("before \033[1;42mLock\033[0m LEFT\n");
 	pthread_mutex_lock(&philo->left);
+	printf("After \033[1;41mLock\033[0m LEFT\n");
 	status_update(data, philo, "has taken a fork");
 	if (!philo->right)
 	{
@@ -44,16 +76,22 @@ void	eat_(t_data *data, t_philo *philo)
 		pthread_mutex_unlock(&philo->left);
 		return ;
 	}
+	printf("before \033[1;42mLock\033[0m RIGHT\n");
 	pthread_mutex_lock(philo->right);
+	printf("After \033[1;41mLock\033[0m RIGHT\n");
 	status_update(data, philo, "has taken a fork");
 	status_update(data, philo, "is eating");
 	usleep_(philo->data->eat);
 	pthread_mutex_lock(&data->check);
 	philo->total++;
 	philo->meal = get_time();
+	printf("before \033[1;43mUnlock\033[0m LEFT\n");
 	pthread_mutex_unlock(&data->check);
+	printf("after \033[1;44mUnlock\033[0m LEFT\n");
 	pthread_mutex_unlock(&philo->left);
+	printf("before \033[1;43mUnlock\033[0m RIGHT\n");
 	pthread_mutex_unlock(philo->right);
+	printf("after \033[1;44mUnlock\033[0m RIGHT\n");
 }
 
 void	print_activity(t_data *data, t_philo *philo, char *status, long int t)
