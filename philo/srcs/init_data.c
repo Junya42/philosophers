@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 22:11:51 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/29 16:29:41 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 21:20:27 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	parse_data(char **av)
 		while (av[i][j])
 		{
 			if (av[i][j] < '0' || av[i][j] > '9' || ft_atoi(av[i]) == -1)
+			{
+				printf("Wrong types of arguments\n");
 				return (0);
+			}
 			j++;
 		}
 		i++;
@@ -49,8 +52,6 @@ int	check_data_values(t_data *data, int ac)
 		check = 0;
 	if (data->min == -1 && ac == 6)
 		check = 0;
-	if (!check)
-		printf("Wrong types of arguments");
 	return (check);
 }
 
@@ -84,6 +85,7 @@ t_data	*data_init(int ac, char **av)
 	get_data_values(data, ac, av);
 	if (!check_data_values(data, ac))
 	{
+		printf("Wrong types of arguments\n");
 		free(data);
 		return (NULL);
 	}

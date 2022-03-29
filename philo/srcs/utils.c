@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 21:06:45 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 05:00:08 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 21:18:40 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_atoi(const char *nptr)
 			return (-1);
 		res = res * 10 + *(nptr++) - 48;
 	}
-	if (res == 0)
+	if (res == 0 || (res * sign) > INT_MAX || (res * sign) < INT_MIN)
 		return (-1);
 	return (res * sign);
 }
