@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 23:42:29 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/29 00:25:57 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:28:36 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,12 @@ int	create_mutex(t_core	*core)
 		return (0);
 	if (pthread_mutex_init(&core->data->check, NULL) != 0)
 		return (i);
-	printf("total = %d\n", core->data->total);
+	if (pthread_mutex_init(&core->data->c_total, NULL) != 0)
+		return (i);
+	if (pthread_mutex_init(&core->data->c_win, NULL) != 0)
+		return (i);
+	if (pthread_mutex_init(&core->data->c_death, NULL) != 0)
+		return (i);
 	while (i < core->data->total)
 	{
 		if (pthread_mutex_init(&core->philo[i].left, NULL) != 0)

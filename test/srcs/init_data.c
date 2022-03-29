@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 22:11:51 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 04:57:11 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:29:41 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	get_data_values(t_data *data, int ac, char **av)
 		data->min = ft_atoi(av[4]);
 	else
 		data->min = -1;
+	data->death = 0;
+	data->win = 0;
 }
 
 t_data	*data_init(int ac, char **av)

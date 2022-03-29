@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 04:38:03 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/29 17:21:12 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:18:09 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int		check_death(t_data *data)
 
 int	check_win(t_data *data)
 {
-	pthread_mutex_lock(&data->c_death);
-	if (data->death == 1)
+	pthread_mutex_lock(&data->c_win);
+	if (data->win == 1)
 	{
-		pthread_mutex_unlock(&data->c_death);
+		pthread_mutex_unlock(&data->c_win);
 		return (1);
 	}
-	pthread_mutex_unlock(&data->c_death);
+	pthread_mutex_unlock(&data->c_win);
 	return (0);
 }
 
@@ -46,7 +46,7 @@ void	*philosophers(void *thread)
 	data = philo->data;
 	checker = (unsigned int)(data->total - 1);
 	if (philo->id % 2 == 0)
-		usleep_(philo->data->eat / 10);
+		usleep_(philo->data->eat / 10, data);
 	while (!check_death(data))
 	{
 		//if (data->win != 1 && data->death != 1)
@@ -84,8 +84,10 @@ int	check_philos_count(t_philo *philo, int required, int i, t_data *data)
 	check = 0;
 	while (i < philo->data->total)
 	{
+		pthread_mutex_lock(&data->c_total);
 		if (philo[i].total >= (unsigned int)required)
 			check++;
+		pthread_mutex_unlock(&data->c_total);
 		i++;
 	}
 	return (win_(check, data));
@@ -150,6 +152,11 @@ int	join_and_destroy(t_philo *philo, t_data *data, int i, int j)
 		printf("C_WIN destroy fail\n");
 		return (0);
 	}
+	if (pthread_mutex_destroy(&data->c_win) != 0)
+	{
+		printf("C_TOTAL destroy fail\n");
+		return (0);
+	}
 	if (pthread_mutex_destroy(&data->c_death) != 0)
 	{
 		printf("C_DEATH destroy fail\n");
@@ -180,6 +187,7 @@ int	threading(t_core *core, t_philo	*philo, int i)
 		i++;
 	}
 	check = reaper(philo, core->data, 0, 0);
+	printf("check = %d\n", check);
 	if (!join_and_destroy(philo, core->data, 0, 0))
 		return (-2);
 	return (check);
