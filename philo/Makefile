@@ -6,13 +6,13 @@
 #    By: anremiki <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/27 05:01:17 by anremiki          #+#    #+#              #
-#    Updated: 2022/03/27 22:50:39 by anremiki         ###   ########.fr        #
+#    Updated: 2022/03/29 21:04:44 by anremiki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS =		./srcs/init_core.c ./srcs/init_data.c ./srcs/init_philo.c	\
 	   		./srcs/main.c ./srcs/status.c ./srcs/thread.c ./srcs/thread_utils.c \
-	   		./srcs/utils.c	
+	   		./srcs/status_last.c ./srcs/utils.c	
 
 INCLUDES =  ./includes/
 
@@ -22,7 +22,7 @@ CC = 		@gcc
 
 RM =		rm -rf
 
-CFLAGS = 	-Wall -Wextra -Werror -I $(INCLUDES)
+CFLAGS = 	-Wall -Wextra -Werror -pthread -g3 -fsanitize=thread -fPIE -pie -I $(INCLUDES)
 
 PTHREAD =	-pthread
 

@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 04:38:03 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/28 18:56:30 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 21:02:40 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,69 +14,50 @@
 
 void	*philosophers(void *thread)
 {
-	t_philo	*philo;
-	t_data	*data;
+	t_philo			*philo;
+	t_data			*data;
+	unsigned int	checker;
 
 	philo = (t_philo *)thread;
 	data = philo->data;
+	checker = (unsigned int)(data->total - 1);
 	if (philo->id % 2 == 0)
-		usleep_(philo->data->eat / 10);
-	while (!data->death && !data->win)
+		usleep_(philo->data->eat / 10, data);
+	while (!check_death(data))
 	{
-	//	printf("DATA WIN = %d ID = %d\n", data->win, philo->id);
-		if (data->win != 1 && data->death != 1)
+		if (philo->id == checker && data->total > 1)
+			eat2_(data, philo);
+		else
 			eat_(data, philo);
-		if (data->win || data->death)
-			break ;
-		if (data->win != 1 && data->death != 1)
-			sleep_(philo);
-		if (data->win == 1)
-			break ;
+		if (check_win(data))
+			return (NULL);
+		sleep_(philo);
 	}
 	return (NULL);
 }
 
-int	check_philos_count(t_philo *philo, int required, int i, t_data *data)
-{
-	int	check;
-
-	check = 0;
-	while (i < philo->data->total)
-	{
-		if (philo[i].total >= (unsigned int)required)
-			check++;
-		i++;
-	}
-	if (check == philo->data->total)
-	{
-		data->win = 1;
-		return (1);
-	}
-	return (0);
-}
-
-int	reaper(t_philo *philo, t_data *data, int i)
+int	reaper(t_philo *philo, t_data *data, int i, int checker)
 {
 	long int	lifespan;
 
 	while (42)
 	{
 		i = 0;
-		while (i < data->total && !data->death)
+		while (i < data->total)
 		{
 			pthread_mutex_lock(&data->check);
 			lifespan = get_time() - philo[i].meal;
 			if (lifespan >= data->die)
 			{
-				status_update(data, &philo[i], "is dead");
-				data->death = 1;
+				start_death(philo, data, i);
+				checker = 1;
 			}
 			pthread_mutex_unlock(&data->check);
-			if (data->death)
+			if (checker)
 				break ;
 			i++;
 		}
-		if (data->death)
+		if (checker)
 			return (0);
 		if (data->min != -1)
 			if (check_philos_count(philo, data->min, 0, data))
@@ -90,30 +71,23 @@ int	join_and_destroy(t_philo *philo, t_data *data, int i, int j)
 	{
 		if (pthread_join(philo[i].t_id, NULL) != 0)
 		{
-			printf("JOIN FAIL\n");
+			printf("Pthread_join failed\n");
 			return (0);
 		}
 		i++;
 	}
-	(void)i;
-//	sleep(1);
 	while (j < data->total)
 	{
 		if (pthread_mutex_destroy(&philo[j].left) != 0)
 		{
-			printf("FORK destroy fail > philo[%d]\n", philo[j].id);
+			printf("Pthread_mutex_destroy failed\n");
 			return (0);
 		}
 		j++;
 	}
-	if (pthread_mutex_destroy(&data->check) != 0)
+	if (!destroy_data_mutex(data))
 	{
-		printf("CHECK destroy fail\n");
-		return (0);
-	}
-	if (pthread_mutex_destroy(&data->print) != 0)
-	{
-		printf("PRINT destroy fail\n");
+		printf("Pthread_mutex_destroy failed\n");
 		return (0);
 	}
 	return (1);
@@ -125,13 +99,12 @@ int	threading(t_core *core, t_philo	*philo, int i)
 
 	while (i < core->data->total)
 	{
+		philo[i].meal = get_time();
 		if (pthread_create(&philo[i].t_id, NULL, philosophers, &philo[i]))
 			return (-1);
-		philo[i].meal = get_time();
 		i++;
 	}
-	check = reaper(philo, core->data, 0);
-	printf("check = %d\n", check);
+	check = reaper(philo, core->data, 0, 0);
 	if (!join_and_destroy(philo, core->data, 0, 0))
 		return (-2);
 	return (check);
