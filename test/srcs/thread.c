@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 04:38:03 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/29 17:17:11 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/03/29 17:21:12 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	*philosophers(void *thread)
 	while (!check_death(data))
 	{
 		//if (data->win != 1 && data->death != 1)
-		if (philo->id == checker)
+		if (philo->id == checker && data->total > 1)
 			eat2_(data, philo);
 		else
 			eat_(data, philo);
