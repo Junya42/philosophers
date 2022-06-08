@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 04:38:03 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/29 21:02:40 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/06/08 14:53:41 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	reaper(t_philo *philo, t_data *data, int i, int checker)
 		{
 			pthread_mutex_lock(&data->check);
 			lifespan = get_time() - philo[i].meal;
-			if (lifespan >= data->die)
+			if (lifespan > data->die)
 			{
 				start_death(philo, data, i);
 				checker = 1;

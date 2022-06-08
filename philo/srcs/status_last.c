@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 20:46:47 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/29 20:56:26 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/06/05 12:08:11 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	eat2_(t_data *data, t_philo *philo)
 	philo->total++;
 	pthread_mutex_unlock(&data->c_total);
 	pthread_mutex_unlock(&data->check);
+	usleep_(philo->data->eat, data);
 	pthread_mutex_unlock(philo->right);
 	pthread_mutex_unlock(&philo->left);
-	usleep_(philo->data->eat, data);
 }
 
 void	start_death(t_philo *philo, t_data *data, int i)

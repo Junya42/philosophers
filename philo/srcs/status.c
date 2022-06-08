@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 00:32:48 by anremiki          #+#    #+#             */
-/*   Updated: 2022/03/29 21:03:00 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/06/08 15:12:57 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	usleep_(long int duration, t_data *data)
 {
 	long int	start;
+	long int	current;
 
 	start = -1;
 	start = get_time();
@@ -22,12 +23,15 @@ void	usleep_(long int duration, t_data *data)
 		printf("usleep_ \033[2;1;33mUnable to get time...\033[22m\033[0m\n");
 	else
 	{
-		while ((get_time() - start) < duration)
+		while (1)
 		{
-			if (duration > 1000)
+			current = get_time() - start;
+			if (current >= duration)
+				break ;
+			if (duration - current > 1000)
 				usleep(100);
 			else
-				usleep(duration / 10);
+				usleep((duration - current) / 10);
 			if (check_win(data) || check_death(data))
 				break ;
 		}
@@ -60,9 +64,9 @@ void	eat_(t_data *data, t_philo *philo)
 	philo->total++;
 	pthread_mutex_unlock(&data->check);
 	pthread_mutex_unlock(&data->c_total);
+	usleep_(philo->data->eat, data);
 	pthread_mutex_unlock(&philo->left);
 	pthread_mutex_unlock(philo->right);
-	usleep_(philo->data->eat, data);
 }
 
 void	print_activity(t_data *data, t_philo *philo, char *status, long int t)
@@ -94,8 +98,6 @@ int	status_update(t_data *data, t_philo *philo, char *status)
 	long int	time;
 
 	time = get_time();
-	if (check_win(data) || check_death(data))
-		return (1);
 	pthread_mutex_lock(&data->print);
 	if (time == -1)
 		printf("Philo[%d]\033[2;1;33m Unable to get time...\033[22m\033[0m\n",
