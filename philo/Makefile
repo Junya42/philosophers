@@ -6,7 +6,7 @@
 #    By: anremiki <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/27 05:01:17 by anremiki          #+#    #+#              #
-#    Updated: 2022/03/29 21:04:44 by anremiki         ###   ########.fr        #
+#    Updated: 2022/06/08 17:59:22 by anremiki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,12 @@ INCLUDES =  ./includes/
 
 OBJS = 		$(SRCS:.c=.o)
 
-CC = 		@gcc
+CC = 		@cc
 
 RM =		rm -rf
 
-CFLAGS = 	-Wall -Wextra -Werror -pthread -g3 -fsanitize=thread -fPIE -pie -I $(INCLUDES)
+CFLAGS_THREAD = -Wall -Wextra -Werror -pthread -g3 -fsanitize=thread -fPIE -pie -I $(INCLUDES)
+CFLAGS = 	-Wall -Wextra -Werror -pthread -I $(INCLUDES)
 
 PTHREAD =	-pthread
 
@@ -36,17 +37,27 @@ CURRENT = $(shell ls ./srcs/ | grep -F .o | wc -l | xargs expr 1 +)
 
 COMPARE = $(shell expr $(TOTAL) + 1)
 
+all:		$(NAME)
+
+thread: all
+
 .c.o:		
 			@echo "Building $< $(CURRENT)/$(TOTAL)"
-			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
-
-all:		$(NAME)
+ifeq ($(MAKECMDGOALS), thread)
+				${CC} ${CFLAGS_THREAD} -c $< -o ${<:.c=.o}
+else
+				${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+endif
 
 $(NAME):	$(OBJS)
 			@echo
 			@echo "\033[1;32mBuilding executable $(NAME)\033[0m"
 			@echo
+ifeq ($(MAKECMDGOALS), thread)
+			$(CC) $(CFLAGS_THREAD) $(PTHREAD) $(OBJS) -o $(NAME)
+else
 			$(CC) $(CFLAGS) $(PTHREAD) $(OBJS) -o $(NAME)
+endif
 			@echo "\033[5;1;34mPhilo : done\033[0m"
 
 clean:

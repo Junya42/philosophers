@@ -6,7 +6,7 @@
 /*   By: anremiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 23:42:29 by anremiki          #+#    #+#             */
-/*   Updated: 2022/06/08 14:49:51 by anremiki         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:29:34 by anremiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ long int	get_time(void)
 
 int	init_data_mutex(t_core *core)
 {
-	if (pthread_mutex_init(&core->data->print, NULL) != 0
-		|| core->data->start == -1)
+	if (pthread_mutex_init(&core->data->print, NULL) != 0)
 		return (0);
 	if (pthread_mutex_init(&core->data->check, NULL) != 0)
 		return (0);
